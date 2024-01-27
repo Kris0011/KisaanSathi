@@ -19,6 +19,8 @@ const AuctionRoom = () => {
   const navigate = useNavigate()
 
   const [bids, setBids] = useState([]);
+  const [chat,setChat] = useState([])
+  const [message,setMessage] = useState('')
   const [bidder,setBidder] = useState('');
   const auc = useSelector((state:any) => state.user.auction)
   const user = useSelector( (state:any) => state.user.user)
@@ -29,6 +31,15 @@ const AuctionRoom = () => {
     }catch(e)
     {
       console.log(e)
+    }
+  }
+
+  const sendMessage = async () => {
+    try{
+      socket.emit('message-passed',{auction_id:auc._id,message:message})
+    }catch(e)
+    {
+      console.log("error" + e)
     }
   }
 
@@ -49,11 +60,19 @@ const AuctionRoom = () => {
         ...updatedAuction.updatedAuction,
         winner:''
       });
+
+      socket.on('message-to-all', (data) => {
+        setChat((chat) => {
+          return [...chat, data.message];
+        });
+      });
+      
       
     });
 
     return () => {
       socket.off('updateAuction');
+      socket.off('message-to-all');
     };
   }, []);
 
@@ -99,6 +118,13 @@ const AuctionRoom = () => {
               Bidder: {bidder}, Amount: {bid.bidAmount}
             </li>
           ))}
+          <input onChange={(e) => setMessage(e.target.value)} type='text'></input>
+          <button onClick={sendMessage}>send</button>
+          <div >
+              {chat.map((chats, index) =>{
+                return <div>{chats}</div>
+              })}
+          </div>
           {expirTime && <MyTimer expiryTimestamp={expirTime} onExpire={onExpire} />}
           
         </ul>
