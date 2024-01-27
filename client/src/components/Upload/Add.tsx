@@ -35,41 +35,52 @@ const AddButton = ({ user }: any) => {
   const [auctionData, setAuctionData] = useState({
     cropName: "",
     auctionTime: "",
-    file: "",
+    cropImage: "",
     bidPrice: 0,
   });
 
   const updateAuctionData = (e: any) => {
+    if(e.target.name === "cropImage" && e.target.files[0] ){
+      setAuctionData({
+        ...auctionData,
+        [e.target.name]: e.target.files[0],
+      });
+      return;
+    }
     setAuctionData({
       ...auctionData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const createAuction = async () => {
+  const createAuction = async (e: any) => {
+    e.preventDefault();
     const cropName = auctionData.cropName;
     const userId = user._id;
+    const expireTime = auctionData.auctionTime;
+    const bidPrice = auctionData.bidPrice;
+    const cropImage = auctionData.cropImage;
 
-    console.log(auctionData.file , auctionData.auctionTime , auctionData.bidPrice , cropName , userId );
+    console.log(cropName, userId, expireTime, bidPrice, cropImage);
+    
 
     try {
-      const res = await axios.post(
-        "http://localhost:3000/api/v1/auction",
-        { cropName, userId , cropImage: auctionData.file , auctionTime: auctionData.auctionTime , bidPrice : auctionData.bidPrice},
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          withCredentials: true,
-        }
-      );
-      if (res) {
-        toast.success("Auction Created");
-        onCloseAuction();
-      }
+      await axios.post("http://localhost:3000/api/v1/createauction", {
+        cropName,
+        userId,
+        expireTime,
+        bidPrice,
+        cropImage,
+      }, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+      toast.success("Auction Created Successfully");
+      onCloseAuction();
     } catch (err) {
-      // console.log(err)
-      toast.error("Invalid Details");
+      toast.error("Error in creating Auction");
     }
   };
 
@@ -156,7 +167,8 @@ const AddButton = ({ user }: any) => {
               <FormLabel color="white">Image File:</FormLabel>
               <Input
                 type="file"
-                name="file"
+                name="cropImage"
+                accept=" .jpg, .jpeg, .png"
                 onChange={updateAuctionData}
                 bg="gray.300"
               />

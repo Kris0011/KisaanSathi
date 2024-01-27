@@ -12,26 +12,32 @@ cloudinary.config({
 
 
 exports.createAuction = async (req,res) => {
+    console.log("Inside create auction");
+
     try{
-        let {cropName, userId , expireTime, bidPrice } = req.body
+        const {cropName, userId , expireTime, bidPrice } = req.body;
+        console.log(cropName, userId , expireTime, bidPrice);
 
         // console.log(req.file);
         // console.log(req.body);
 
-        const tempFilePath = req.file.path;
+        // const file = req.files.cropImage;
+        // console.log(req.files.cropImage);
 
         
         
-        await cloudinary.uploader.upload(tempFilePath, (err, result) => {
-            if (err) {
-                console.log(err);
-            }
-            url = result.url;
-            public_id = result.public_id;
+        // await cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        //     url = result.url;
+        //     public_id = result.public_id;
 
-            console.log(url);
-            console.log(public_id);
-        });
+        //     console.log(url);
+        //     console.log(public_id);
+        // });
+        const public_id = "public_id";
+        const url = "url";
         
         const auction = await Auction.create({userId, cropName, expireTime, bidPrice, cropImage:{public_id: public_id, url: url} });
 
@@ -46,6 +52,11 @@ exports.createAuction = async (req,res) => {
             error: err.message
         })
     }
+}
+
+exports.checkAuction = async (req,res) => {
+
+    console.log("Inside check auction");
 }
 
 exports.getAllAuction = async (req,res) => {
