@@ -13,8 +13,13 @@ cloudinary.config({
 
 exports.createAuction = async (req,res) => {
     try{
-        const {cropName,userId } = req.body
-        const{ tempFilePath } = req.files.cropImage;
+        let {cropName, user , expireTime, bidPrice } = req.body
+
+        // console.log(req.file);
+        // console.log(req.body);
+
+        const tempFilePath = req.file.path;
+
         
         
         await cloudinary.uploader.upload(tempFilePath, (err, result) => {
@@ -23,9 +28,12 @@ exports.createAuction = async (req,res) => {
             }
             url = result.url;
             public_id = result.public_id;
+
+            console.log(url);
+            console.log(public_id);
         });
         
-        const auction = await Auction.create({userId,cropName, url, public_id});
+        const auction = await Auction.create({user, cropName, expireTime, bidPrice, cropImage:{public_id: public_id, url: url} });
 
         res.status(200).json({
             success:true,
