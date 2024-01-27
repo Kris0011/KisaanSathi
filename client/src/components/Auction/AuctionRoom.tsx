@@ -7,6 +7,7 @@ import { Button, Input } from "@chakra-ui/react";
 const socket = io.connect("http://localhost:3000");
 import { motion } from "framer-motion";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import axios from "axios";
 
 const AuctionRoom = () => {
   const [expirTime, setExpirTime] = useState(null);
@@ -31,9 +32,30 @@ const AuctionRoom = () => {
   const user = useSelector((state: any) => state.user.user);
   const [history, setHistory] = useState<string[]>([]);
 
+  const [emailData , setEmailData] = useState({
+    email : "krishp759@gmail.com",
+    subject: "Auction Winner Confirmation",
+    winnerName: "Kris Patel",
+    cropName: "Baajro",
+    finalBidAmount: "500",
+    auctionDate: "2022-02-15",
+    ownerAccountDetails: "Owner's Bank Account Details",
+  })
+
   const onExpire = async () => {
+    setEmailData(emailData);
+    const data = emailData;
     try {
-      navigate("/");
+      await axios.post("http://localhost:3000/api/v1/sendmail" , data ,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        withCredentials: true
+      });
+
+      console.log("mail send to user");
+
     } catch (e) {
       console.log(e);
     }
@@ -75,7 +97,9 @@ const AuctionRoom = () => {
       const currentTime = new Date().toLocaleTimeString();
       const message = `${currentTime} Bid from ${updatedAuction.bidder} of Amount ${updatedAuction.updatedAuction.bidPrice}`;
       setHistory((prevHistory) => [...prevHistory, message]);
-      console.log(history);
+      // console.log(history);
+    console.log(auc);
+
     });
 
     return () => {
