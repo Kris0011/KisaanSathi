@@ -2,7 +2,7 @@ const { sendEmail } = require("../middlewares/sendMail");
 const Token = require("../models/Token");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken")
-
+const axios = require("axios")
 
 exports.register = async (req, res) => {
     try {
@@ -270,3 +270,35 @@ exports.subscribeUser = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
       }
   };
+
+  exports.qna = async (req,res) => {
+    try{
+        const {question} = req.body;
+
+        const response = await axios.post(
+            'https://api.openai.com/v1/engines/davinci-codex/completions',
+            {
+              prompt: `Context: ${context}\nQuestion: ${question}\nAnswer:`,
+              max_tokens: 100,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+              },
+            }
+          );
+
+          res.status(200).status({
+            success: true,
+            data:response.data
+          })
+
+    }catch(err)
+    {
+        res.status(500).json({
+            success: false,
+            error: err.message
+        })
+    }
+  }
