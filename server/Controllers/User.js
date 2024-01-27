@@ -219,3 +219,40 @@ exports.loadUser = async (req,res) => {
         })
     }
 }
+
+
+exports.subscribeUser = async (req, res) => {
+
+    console.log("subscribing user...");
+    // const { targetUserId } = req.params; // Assuming targetUserId is passed in the URL parameters
+    // const subscriberUserId = req.user._id; // Assuming the subscriber user is authenticated
+
+    const { targetUserId, subscriberUserId } = req.body;
+    // targetUserId : jene subscribe karavu che (creater of auction)
+    // subscriberUserId : je subscribe kare che (logged in as user)
+  
+    
+    try {
+        // Check if the subscriberUserId is in the target user's subscribedBy array
+        const targetUser = await User.findById(targetUserId);
+    
+        if (targetUser.subscribedBy.includes(subscriberUserId)) {
+          // If already subscribed, unsubscribe by removing the subscriberUserId
+          await User.findByIdAndUpdate(targetUserId, {
+            $pull: { subscribedBy: subscriberUserId },
+          });
+    
+          res.status(200).json({ message: 'Unsubscribed successfully' });
+        } else {
+          // If not subscribed, subscribe by adding the subscriberUserId
+          await User.findByIdAndUpdate(targetUserId, {
+            $addToSet: { subscribedBy: subscriberUserId },
+          });
+    
+          res.status(200).json({ message: 'Subscribed successfully' });
+        }
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+  };

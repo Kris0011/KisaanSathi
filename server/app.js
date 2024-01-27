@@ -9,7 +9,7 @@ const user = require('./routes/User')
 const auction = require('./routes/Auction');
 const Auction = require('./models/Auction');
 
-const post = require('./routes/Post');
+const community = require('./routes/Community');
 
 //middlewares
 app.use(express.json())
@@ -55,11 +55,14 @@ io.on('connection', (socket) => {
     socket.on('joinAuction', (data) => {
         socket.join(data.auctionId)
       });
+    socket.on('message-passed',(data) => {
+        io.to(data.auction_id).emit('message-to-all',{message:data.message})
+    })
 });
 //router
 app.use('/api/v1',user)
 app.use('/api/v1',auction)
-app.use('/api/v1',post)
+app.use('/api/v1',community)
 
 
 
