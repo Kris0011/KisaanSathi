@@ -1,18 +1,10 @@
-import React from 'react';
 import { useTimer } from 'react-timer-hook';
 
 function MyTimer({ expiryTimestamp,onExpire } : any) {
   const {
-    totalSeconds,
     seconds,
     minutes,
     hours,
-    days,
-    isRunning,
-    start,
-    pause,
-    resume,
-    restart,
   } = useTimer({ expiryTimestamp, onExpire: onExpire});
 
 

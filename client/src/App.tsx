@@ -5,10 +5,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Auction from "./components/Auction/AuctionPage";
 import { useDispatch, useSelector } from "react-redux";
-import Footer from "./components/Footer";
 import axios from "axios";
 import AuctionRoom from "./components/Auction/AuctionRoom";
-import  toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const dispatch = useDispatch()

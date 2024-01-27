@@ -32,6 +32,7 @@ const AuctionRoom = () => {
 
   const onExpire = async () => {
     try {
+        setBids(bids);
       navigate("/");
     } catch (e) {
       console.log(e);

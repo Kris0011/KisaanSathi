@@ -8,6 +8,19 @@ exports.register = async (req, res) => {
     try {
         const { name, email, password, contact, address } = req.body;
 
+        const file = req.files.avtar;
+        console.log(file);
+
+        await cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            url = result.url;
+            public_id = result.public_id;
+        });
+
+        const { avatar } = req.files;
+
         let user = await User.findOne({ email });
 
         if (user && user.isVerified) {
@@ -24,7 +37,7 @@ exports.register = async (req, res) => {
                 password,
                 contact,
                 address,
-                avtar: { public_id: 'sample id', url: 'sample url' },
+                avtar: { url, public_id },
             });
             const otp = await user.generateOTP();
             
@@ -46,6 +59,7 @@ exports.register = async (req, res) => {
         }
         else{
             const otp = await user.generateOTP();
+            console.log(`Your OTP is ${otp}`);
             
 
             user.verifyOTP = `${otp}`

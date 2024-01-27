@@ -50,7 +50,7 @@ export default function Register({
 
  
 
-  const registerUser = async (e: any) => {
+  const registerUser = async () => {
     // e.preventDefault();
     
     // const { name, email, password, contact , address } = data;
@@ -79,7 +79,7 @@ export default function Register({
 
     };
 
-    const verifyOTP = async (e: any) => {
+    const verifyOTP = async () => {
       // e.preventDefault();
       
     try{

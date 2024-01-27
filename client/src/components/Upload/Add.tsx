@@ -18,14 +18,13 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Textarea,
 } from "@chakra-ui/react";
 
 import toast from "react-hot-toast";
 import axios from "axios";
 
 
-import { AddIcon, EditIcon, CopyIcon } from "@chakra-ui/icons";
+import { AddIcon, CopyIcon } from "@chakra-ui/icons";
 
 const AddButton = ( {user }: any) => {
 
@@ -50,7 +49,7 @@ const AddButton = ( {user }: any) => {
     
   }
 
-  const createAuction = async (e : any) => {
+  const createAuction = async () => {
 
 
     const cropName = auctionData.cropName;

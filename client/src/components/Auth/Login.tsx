@@ -13,7 +13,6 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
-import { useToast } from '@chakra-ui/react'
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useDispatch } from 'react-redux'
@@ -40,7 +39,7 @@ export default function Login({
     email: "",
     password: "",
   });
-  const handleRegisterAndClose = (e : any) => { 
+  const handleRegisterAndClose = () => { 
     onClose();
     onOpenRegister();
   };
