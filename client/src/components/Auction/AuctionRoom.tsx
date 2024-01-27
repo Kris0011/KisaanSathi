@@ -45,6 +45,7 @@ const AuctionRoom = () => {
   const onExpire = async () => {
     setEmailData(emailData);
     const data = emailData;
+
     try {
       await axios.post("http://localhost:3000/api/v1/sendmail" , data ,
       {
@@ -55,6 +56,7 @@ const AuctionRoom = () => {
       });
 
       console.log("mail send to user");
+      navigate("/auction");
 
     } catch (e) {
       console.log(e);
