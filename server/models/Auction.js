@@ -16,7 +16,7 @@ const auctionSchema = new mongoose.Schema({
   expireTime: {
     type: Date,
     default: function () {
-      return new Date(Date.now() +  40 * 60 * 1000); // Setting the default expiration time to 15 minutes from now
+      return new Date(Date.now() +  400 * 60 * 1000); // Setting the default expiration time to 15 minutes from now
     }
   },
   bidPrice:{

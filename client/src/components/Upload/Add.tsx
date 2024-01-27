@@ -98,7 +98,7 @@ const AddButton = ( {user }: any) => {
 
   return (
     <div>
-      <Box position="fixed" bottom="5" right="5">
+      <Box position="fixed" bottom="5" right="5" zIndex={100}>
         <Menu>
           <MenuButton
             as={IconButton}
