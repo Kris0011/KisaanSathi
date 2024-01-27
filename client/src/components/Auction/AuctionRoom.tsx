@@ -7,6 +7,7 @@ import { Button, Input } from "@chakra-ui/react";
 const socket = io.connect("http://localhost:3000");
 import { motion } from "framer-motion";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import axios from "axios";
 
 const AuctionRoom = () => {
   const [expirTime, setExpirTime] = useState(null);
@@ -20,6 +21,7 @@ const AuctionRoom = () => {
     currentBidder: "",
   });
   const navigate = useNavigate();
+  const [ placeBidAmount , setPlaceBidAmount] = useState<Number>(1);
 
   const [bids, setBids] = useState<{ bidAmount: number }[]>([]);
 
@@ -30,10 +32,32 @@ const AuctionRoom = () => {
   const user = useSelector((state: any) => state.user.user);
   const [history, setHistory] = useState<string[]>([]);
 
+  const [emailData , setEmailData] = useState({
+    email : "krishp759@gmail.com",
+    subject: "Auction Winner Confirmation",
+    winnerName: "Kris Patel",
+    cropName: "Baajro",
+    finalBidAmount: "500",
+    auctionDate: "2022-02-15",
+    ownerAccountDetails: "Owner's Bank Account Details",
+  })
+
   const onExpire = async () => {
+    setEmailData(emailData);
+    const data = emailData;
     try {
         setBids(bids);
       navigate("/");
+      await axios.post("http://localhost:3000/api/v1/sendmail" , data ,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        withCredentials: true
+      });
+
+      console.log("mail send to user");
+
     } catch (e) {
       console.log(e);
     }
@@ -75,7 +99,9 @@ const AuctionRoom = () => {
       const currentTime = new Date().toLocaleTimeString();
       const message = `${currentTime} Bid from ${updatedAuction.bidder} of Amount ${updatedAuction.updatedAuction.bidPrice}`;
       setHistory((prevHistory) => [...prevHistory, message]);
-      console.log(history);
+      // console.log(history);
+    console.log(auc);
+
     });
 
     return () => {
@@ -84,8 +110,11 @@ const AuctionRoom = () => {
     };
   }, []);
 
-  const placeBid = (bidAmount: any) => {
-    socket.emit("placeBid", { auction: auction, bidAmount, bidder: user.name });
+  const placeBid = (amount: Number) => {
+    // const nextBidAmount = Math.max(amount, auction?.bidPrice || 0) + 50; // Ensure the bid amount is at least 50 more than the current bid
+    // console.log(nextBidAmount)
+    console.log(amount)
+    socket.emit("placeBid", { auction: auction, bidAmount: amount, bidder: user.name });
   };
 
   return (
@@ -95,16 +124,43 @@ const AuctionRoom = () => {
         <div className="glassy-effect p-4 shadow-md rounded-md m-2 w-[500px]">
           <p>Current Bidder: {bidder} </p>
           <p>Current Price: {auction?.bidPrice} </p>
+          <Input bg={"white"} w={48} color={"black"} type="Number" onChange={(e) => setPlaceBidAmount(parseInt(e.target.value, 10))} ></Input>
           <Button
             className="m-4"
             onClick={() =>
               placeBid(
-                bids.length > 0 ? bids[bids.length - 1].bidAmount + 1 : 1
+                placeBidAmount
               )
             }
           >
+          
             Place Bid
           </Button>
+          <div className="flex  space-x-2 justify-center mb-4">
+
+          <Button onClick={() =>
+              placeBid(
+                bids.length > 0 ? bids[bids.length - 1].bidAmount + 50 : 50
+              )
+            }>+50</Button>
+          <Button onClick={() =>
+              placeBid(
+                bids.length > 0 ? bids[bids.length - 1].bidAmount + 100 : 100
+              )
+            }>+100</Button>
+          <Button
+          onClick={() =>
+            placeBid(
+              bids.length > 0 ? bids[bids.length - 1].bidAmount + 200 : 200
+            )
+          }>+200</Button>
+          <Button
+          onClick={() =>
+            placeBid(
+              bids.length > 0 ? bids[bids.length - 1].bidAmount + 500 : 500
+            )
+          }>+500</Button>
+          </div>
           {expirTime && (
             <MyTimer expiryTimestamp={expirTime} onExpire={onExpire} />
           )}
@@ -186,34 +242,7 @@ const AuctionRoom = () => {
 
         </div>
       </div>
-      <div style={{ textAlign: "center", marginTop: "20px" }}>
-        <div
-          style={{
-            border: "1px solid #ccc",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
-        >
-          <h3>Bid History</h3>
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            {bids.map((bid, index) => (
-              <li
-                key={index}
-                style={{
-                  border: "1px solid #eee",
-                  padding: "10px",
-                  margin: "5px",
-                  borderRadius: "5px",
-                  backgroundColor: "#f9f9f9",
-                }}
-              >
-                Bidder: {bidder}, Amount: {bid.bidAmount}
-              </li>
-            ))}
-            
-          </ul>
-        </div>
-      </div>
+      
     </div>
   );
 };

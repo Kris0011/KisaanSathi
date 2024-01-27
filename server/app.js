@@ -37,9 +37,10 @@ io.on('connection', (socket) => {
     socket.on('placeBid',async (data) => {
         
         const currentAuction = await Auction.findById(data.auction._id)
+        // console.log(data);
         
             if(currentAuction) {
-            currentAuction.bidPrice += 1;
+            currentAuction.bidPrice += data.bidAmount;
             }
             currentAuction.bidder = data.bidder;
 
