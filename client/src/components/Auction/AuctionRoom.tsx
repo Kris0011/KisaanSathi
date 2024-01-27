@@ -47,6 +47,8 @@ const AuctionRoom = () => {
     const data = emailData;
 
     try {
+        setBids(bids);
+      navigate("/");
       await axios.post("http://localhost:3000/api/v1/sendmail" , data ,
       {
         headers: {

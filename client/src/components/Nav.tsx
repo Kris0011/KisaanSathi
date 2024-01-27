@@ -9,7 +9,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  useToast,
   IconButton,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
@@ -41,7 +40,7 @@ const CustomNavLink: React.FC<CustomNavLinkProps> = ({
   );
 };
 
-export default function Nav({ toggleLogin, isLoggedIn , routes ,user }: any) {
+export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
 
 
   // const toast = useToast();
@@ -124,7 +123,7 @@ export default function Nav({ toggleLogin, isLoggedIn , routes ,user }: any) {
                     activeClassName="text-blue-400"
                     to="/profile"
                   >
-                    <MenuItem bg={"gray.900"}>My Profile</MenuItem>
+                    <MenuItem bg={"gray.900"}>{user?.name}</MenuItem>
                   </CustomNavLink>
                   <MenuItem onClick={logout} bg={"gray.900"}>
                     <span className="text-red-500">Logout</span>
