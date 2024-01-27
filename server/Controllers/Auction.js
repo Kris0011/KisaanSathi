@@ -1,12 +1,31 @@
 const Auction = require("../models/Auction")
 const {sendAuctionConfirmationEmail} = require('../middlewares/sendMail');
 
+const cloudinary = require('cloudinary').v2;
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
 
 exports.createAuction = async (req,res) => {
     try{
-        const {cropName,userId} = req.body
-
-        const auction = await Auction.create({userId,cropName})
+        const {cropName,userId } = req.body
+        const{ tempFilePath } = req.files.cropImage;
+        
+        
+        await cloudinary.uploader.upload(tempFilePath, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            url = result.url;
+            public_id = result.public_id;
+        });
+        
+        const auction = await Auction.create({userId,cropName, url, public_id});
 
         res.status(200).json({
             success:true,
