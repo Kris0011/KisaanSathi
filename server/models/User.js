@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    subscriber:[
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "User"
+        }
+    ],
     verifyOTP:String,
     verifyOTPexpires:Date,
     resetPasswordToken:String,

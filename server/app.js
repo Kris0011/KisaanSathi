@@ -55,6 +55,9 @@ io.on('connection', (socket) => {
     socket.on('joinAuction', (data) => {
         socket.join(data.auctionId)
       });
+    socket.on('message-passed',(data) => {
+        io.to(data.auction_id).emit('message-to-all',{message:data.message})
+    })
 });
 //router
 app.use('/api/v1',user)
