@@ -1,4 +1,4 @@
-import {useState}from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -23,77 +23,61 @@ import {
 import toast from "react-hot-toast";
 import axios from "axios";
 
-
 import { AddIcon, CopyIcon } from "@chakra-ui/icons";
 
-const AddButton = ( {user }: any) => {
-
+const AddButton = ({ user }: any) => {
   const {
     isOpen: isOpenAuction,
     onOpen: onOpenAuction,
     onClose: onCloseAuction,
   } = useDisclosure();
-  
 
-  const [ auctionData , setAuctionData] = useState({
-    cropName : "",
-  })
+  const [auctionData, setAuctionData] = useState({
+    cropName: "",
+    auctionTime: "",
+    file: "",
+    bidPrice: 0,
+  });
 
   const updateAuctionData = (e: any) => {
     setAuctionData({
       ...auctionData,
-      [e.target.name] : e.target.value,
-      
-    })
-    
-    
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const createAuction = async () => {
-
-
     const cropName = auctionData.cropName;
     const userId = user._id;
 
+    console.log(auctionData.file , auctionData.auctionTime , auctionData.bidPrice , cropName , userId );
 
-     try{
-      const res = await axios.post("http://localhost:3000/api/v1/auction", { cropName , userId } ,
-      {
-        headers: {
-          "Content-Type": "application/json"
-        },
-        withCredentials: true
-      }
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/auction",
+        { cropName, userId , cropImage: auctionData.file , auctionTime: auctionData.auctionTime , bidPrice : auctionData.bidPrice},
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
       );
-      if( res) {
+      if (res) {
         toast.success("Auction Created");
         onCloseAuction();
       }
-      
-    }
-    catch(err){
+    } catch (err) {
       // console.log(err)
       toast.error("Invalid Details");
-
     }
-
-
-  }
+  };
 
   const openAuction = () => {
-    if(user){
+    if (user) {
       onOpenAuction();
     }
-  }
-
-
-
-
-  
-
-  
-
-
+  };
 
   return (
     <div>
@@ -115,7 +99,11 @@ const AddButton = ( {user }: any) => {
             _focus={{ boxShadow: "outline" }}
           />
           <MenuList bg={"bg.gray.800"}>
-            <MenuItem bg={"bg.gray.800"} icon={<CopyIcon />} onClick={openAuction}>
+            <MenuItem
+              bg={"bg.gray.800"}
+              icon={<CopyIcon />}
+              onClick={openAuction}
+            >
               Create Auction
             </MenuItem>
             {/* <MenuItem bg={"bg.gray.800"} icon={<EditIcon />} onClick={onOpenAuction}>
@@ -133,12 +121,46 @@ const AddButton = ( {user }: any) => {
             Create Auction
           </ModalHeader>
           <ModalCloseButton className="text-white" />
-          <ModalBody className="space-y-2 bg-gray-800  bg-opacity-100 shadow-lg text-gray-900">
+          <ModalBody className="space-y-2 bg-gray-800 bg-opacity-100 shadow-lg text-gray-900">
             <FormControl>
               <FormLabel color="white">Name:</FormLabel>
-              <Input placeholder=""  name="cropName" onChange={updateAuctionData} bg="gray.300" />
+              <Input
+                placeholder="Name"
+                name="cropName"
+                onChange={updateAuctionData}
+                bg="gray.300"
+              />
             </FormControl>
-            
+
+            <FormControl>
+              <FormLabel color="white">Auction Time:</FormLabel>
+              <Input
+                type="datetime-local"
+                name="auctionTime"
+                onChange={updateAuctionData}
+                bg="gray.300"
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel color="white">Bid Starting Price:</FormLabel>
+              <Input
+                type="number"
+                name="bidPrice"
+                onChange={updateAuctionData}
+                bg="gray.300"
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel color="white">Image File:</FormLabel>
+              <Input
+                type="file"
+                name="file"
+                onChange={updateAuctionData}
+                bg="gray.300"
+              />
+            </FormControl>
           </ModalBody>
           <ModalFooter className=" bg-gray-800  bg-opacity-100 shadow-lg text-white">
             <Button colorScheme="teal" m={3} onClick={createAuction}>
@@ -148,8 +170,6 @@ const AddButton = ( {user }: any) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      
     </div>
   );
 };

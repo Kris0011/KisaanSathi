@@ -13,7 +13,7 @@ cloudinary.config({
 
 exports.createAuction = async (req,res) => {
     try{
-        let {cropName, user , expireTime, bidPrice } = req.body
+        let {cropName, userId , expireTime, bidPrice } = req.body
 
         // console.log(req.file);
         // console.log(req.body);
@@ -33,7 +33,7 @@ exports.createAuction = async (req,res) => {
             console.log(public_id);
         });
         
-        const auction = await Auction.create({user, cropName, expireTime, bidPrice, cropImage:{public_id: public_id, url: url} });
+        const auction = await Auction.create({userId, cropName, expireTime, bidPrice, cropImage:{public_id: public_id, url: url} });
 
         res.status(200).json({
             success:true,
