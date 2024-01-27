@@ -23,11 +23,11 @@ function MyTimer({ expiryTimestamp,onExpire } : any) {
       <div className="flex justify-center space-x-4 mt-5">
         
         <div className="p-2 rounded-md  shadow-md transform hover:scale-105 transition-transform duration-300 bg-black  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 w-full">
-          <div className="text-4xl font-bold text-rose-500 ">{hours}</div>
+          <div className="text-4xl font-bold text-green-500">{hours}</div>
           <div className="text-sm text-gray-400 px-2">Hours</div>
         </div>
         <div className="p-2 rounded-md  shadow-md transform hover:scale-105 transition-transform duration-300 bg-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 w-full">
-          <div className="text-4xl font-bold text-purple-500">{minutes}</div>
+          <div className="text-4xl font-bold text-green-500">{minutes}</div>
           <div className="text-sm text-gray-400 px-1">Minutes</div>
         </div>
         <div className="p-2 rounded-md shadow-md transform hover:scale-105 transition-transform duration-300 bg-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 w-full">

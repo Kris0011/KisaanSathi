@@ -14,6 +14,9 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
 
 interface CustomNavLinkProps {
   to: string;
@@ -42,6 +45,7 @@ export default function Nav({ toggleLogin, isLoggedIn , routes ,user }: any) {
 
 
   // const toast = useToast();
+  const dispatch = useDispatch();
 
   const {
     isOpen: isOpenLogin,
@@ -55,9 +59,27 @@ export default function Nav({ toggleLogin, isLoggedIn , routes ,user }: any) {
   } = useDisclosure();
 
   const logout = async () => {
+
+    
+    try{
+      await axios.get("http://localhost:3000/api/v1//logout", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      dispatch({
+        type: "CLEAR_USER",
+      });
+
+      toast.success("Logged out successfully");
+      toggleLogin();
+    }catch(err){
+      toast.error("Error");
+    }
+
+
   
-    toast.success("Logged out successfully");
-    toggleLogin();
   };
 
   return (

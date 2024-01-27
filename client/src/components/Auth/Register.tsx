@@ -55,6 +55,8 @@ export default function Register({
     
     // const { name, email, password, contact , address } = data;
     // console.log(name, email, password, contact , address);
+
+    // console.log(data);
     
     
     try{
@@ -70,7 +72,7 @@ export default function Register({
      
     }
     catch(err){
-      // console.log(err)
+      console.log(err)
       toast.error("Invalid Credentials");
 
     }
