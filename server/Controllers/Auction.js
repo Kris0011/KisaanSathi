@@ -33,8 +33,8 @@ exports.createAuction = async (req,res) => {
         //     url = result.url;
         //     public_id = result.public_id;
 
-        //     console.log(url);
-        //     console.log(public_id);
+        //     console.log("url : ", url);
+        //     console.log("public_id : ", public_id);
         // });
         const public_id = "public_id";
         const url = "url";
