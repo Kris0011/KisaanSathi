@@ -5,7 +5,7 @@ const router = express.Router();
 const multer = require("multer");
 
 
-router.get('/auctions',isAuthenticated, getAllAuction)
+router.get('/auctions', getAllAuction)
 router.post('/auction',isAuthenticated, multer({ storage: multer.diskStorage({}) }).single("cropImage"), createAuction)
 router.post('/sendmail' , checkMail)
 

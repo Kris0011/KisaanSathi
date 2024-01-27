@@ -3,23 +3,33 @@ const Token = require("../models/Token");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken")
 
+const cloudinary = require('cloudinary').v2;
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+
 
 exports.register = async (req, res) => {
     try {
         const { name, email, password, contact, address } = req.body;
 
-        const file = req.files.avtar;
-        console.log(file);
+        console.log(req.body);
 
-        await cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+        const tempFilePath = req.file.path;
+
+
+        await cloudinary.uploader.upload(tempFilePath, (err, result) => {
             if (err) {
                 console.log(err);
             }
             url = result.url;
             public_id = result.public_id;
         });
-
-        const { avatar } = req.files;
 
         let user = await User.findOne({ email });
 
@@ -47,7 +57,7 @@ exports.register = async (req, res) => {
             await user.save()
             await sendEmail({
                 email,
-                subject: 'SWASTIK Registration VERIFICATION',
+                subject: 'OTP from Kisaan Sathi',
                 message:  `your OTP is ${otp}`,
             });
     
@@ -68,7 +78,7 @@ exports.register = async (req, res) => {
             await user.save()
             await sendEmail({
                 email:user.email,
-                subject: 'SWASTIK REGISTRATION VERIFICATION',
+                subject: 'OTP from Kisaan Sathi',
                 message:  `your OTP is ${otp}`,
             });
 
