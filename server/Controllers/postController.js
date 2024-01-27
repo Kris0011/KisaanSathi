@@ -1,4 +1,4 @@
-const Post = require("../models/Post")
+const Post = require("../models/postModel")
 
 
 exports.createPost = async (req,res) => {
@@ -22,11 +22,11 @@ exports.createPost = async (req,res) => {
 
 exports.getPost = async (req,res) => {
     try{
-        const post = await Post.find({})
+        const posts = await Post.find().populate("comments").exec();
 
         res.status(200).json({
             success: true,
-            post
+            posts
         })
 
     }

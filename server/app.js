@@ -9,7 +9,7 @@ const user = require('./routes/User')
 const auction = require('./routes/Auction');
 const Auction = require('./models/Auction');
 
-const post = require('./routes/Post');
+const community = require('./routes/Community');
 
 //middlewares
 app.use(express.json())
@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
 //router
 app.use('/api/v1',user)
 app.use('/api/v1',auction)
-app.use('/api/v1',post)
+app.use('/api/v1',community)
 
 
 
