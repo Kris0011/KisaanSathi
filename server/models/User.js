@@ -19,12 +19,15 @@ const userSchema = new mongoose.Schema({
     },
     contact:{
         typeof:String,
-
     },
     address:{
         type:String,
         required:[true,'Please enter Address']
     },
+    subscribedBy: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }],
     avtar: {
         public_id: String,
         url: String,
