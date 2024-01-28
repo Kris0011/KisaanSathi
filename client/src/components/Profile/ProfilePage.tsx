@@ -52,7 +52,7 @@ export default function ProfilePage({
         <div className="flex flex-col mt-10 items-center justify-center   pb-10  ">
           <img
             className="md:w-52 md:h-44 h-20 w-20 md:ml-4 mb-3 rounded-full shadow-lg"
-            src={user?.avtar.url}
+            src="/avatar.jpeg"
             alt={user?.name}
           />
 
