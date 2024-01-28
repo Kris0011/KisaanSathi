@@ -5,39 +5,32 @@ const cloudinary = require('cloudinary').v2;
 
 
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+  cloud_name: "dlolke5j9",
+  api_key: "732695999155916",
+  api_secret: "kZ09EXXdUgZ5c7oxwNFLTiAFcww",
 });
 
 
 exports.createAuction = async (req,res) => {
-    console.log("Inside create auction");
 
     try{
         const {cropName, userId , expireTime, bidPrice } = req.body;
-        console.log(cropName, userId , expireTime, bidPrice);
 
-        // console.log(req.file);
-        // console.log(req.body);
+        let public_id = "public_id";
+        let url = "url";
+        console.log(req.file.path)
+        await cloudinary.uploader.upload(req.file.path, (err, result) => {
+            if (err) {
+                console.log("error is " +err);
+            }
+            console.log(result)
+            url = result.url;
+            public_id = result.public_id;
 
-        // const file = req.files.cropImage;
-        // console.log(req.files.cropImage);
+            console.log("url : ", url);
+            console.log("public_id : ", public_id);
+        });
 
-        
-        
-        // await cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
-        //     if (err) {
-        //         console.log(err);
-        //     }
-        //     url = result.url;
-        //     public_id = result.public_id;
-
-        //     console.log("url : ", url);
-        //     console.log("public_id : ", public_id);
-        // });
-        const public_id = "public_id";
-        const url = "url";
         
         const auction = await Auction.create({userId, cropName, expireTime, bidPrice, cropImage:{public_id: public_id, url: url} });
 
