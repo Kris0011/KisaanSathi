@@ -5,6 +5,10 @@ const auctionSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User"
   },
+  desc: {
+    type: String,
+    required: true
+  },
   cropName: {
     type: String,
     required: true,
