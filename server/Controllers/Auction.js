@@ -18,6 +18,7 @@ exports.createAuction = async (req,res) => {
 
         let public_id = "public_id";
         let url = "url";
+        let desc = "This is description";
         console.log(req.file.path)
         await cloudinary.uploader.upload(req.file.path, (err, result) => {
             if (err) {

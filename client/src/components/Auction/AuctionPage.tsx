@@ -82,15 +82,17 @@ export default function Auction({ isLoggedIn, user }: any) {
             if (!isNaN(expireTime) && Date.now() <= expireTime) {
               return (
                 <Reveal>
-                  <div className="glassy-effect  border-zinc-800 border-2 flex flex-col items-center justify-between p-7 max-w-[600px] h-[300px] rounded-md ">
+                  <div className="glassy-effect  border-zinc-800 border-2 flex flex-col items-center justify-between p-7 max-w-[600px] rounded-md ">
                     <h2 className="text-2xl ">
                       Name :{" "}
                       <span className="font-semibold">{auction.cropName}</span>
                     </h2>
-                    <p className="description">
-                      Description: Lorem ipsum dolor sit amet, consectetur
-                      adipiscing elit....
+                    <img src={auction.cropImage.url} className="h-48 rounded-md m-4" alt="" />
+                    <p className="description m-2">
+                      <span className="font-semibold">Description : </span>
+                      {auction.desc}
                     </p>
+                    {/* <p>{auction.userId.populate().name}</p> */}
                     <Button
                       className="btn"
                       onClick={() =>
