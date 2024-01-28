@@ -35,7 +35,7 @@ const AddButton = ({ user }: any) => {
   const [auctionData, setAuctionData] = useState({
     cropName: "",
     auctionTime: "",
-    cropImage: "",
+    cropImage: null,
     bidPrice: 0,
   });
 
@@ -54,7 +54,7 @@ const AddButton = ({ user }: any) => {
   };
 
   const createAuction = async (e: any) => {
-    e.preventDefault();
+   
     const cropName = auctionData.cropName;
     const userId = user._id;
     const expireTime = auctionData.auctionTime;
@@ -65,7 +65,7 @@ const AddButton = ({ user }: any) => {
     
 
     try {
-      await axios.post("http://localhost:3000/api/v1/createauction", {
+      await axios.post("http://localhost:3000/api/v1/auction", {
         cropName,
         userId,
         expireTime,
