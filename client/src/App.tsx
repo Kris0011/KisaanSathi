@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import AuctionRoom from "./components/Auction/AuctionRoom";
 import { Toaster } from 'react-hot-toast';
+import ProfilePage from "./components/Profile/ProfilePage";
 
 function App() {
   const dispatch = useDispatch()
@@ -50,7 +51,11 @@ function App() {
     {
       path: "/auction",
       name : "Auction",
+    },{
+      path : "http://localhost:8501/" ,
+      name : "Crop Prediction"
     }
+
   ]
 
 
@@ -73,7 +78,7 @@ function App() {
       {/* <div className="bgContainer1"></div> */}
       <Toaster />
       <div className="mb-24 ">
-      <Nav toggleLogin={toggleLogin} isLoggedIn={isLoggedIn} routes={routes} user={user}/>
+      <Nav toggleLogin={toggleLogin} isLoggedIn={isLoggedIn} routes={routes} user={user} />
 
 
       </div>
@@ -83,6 +88,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/auction" element={<Auction isLoggedIn={isLoggedIn} user={user}/>} />
       <Route path="/auctionPage" element={<AuctionRoom />} />
+      <Route path="/profile" element={<ProfilePage toggleLogin={toggleLogin} isLoggedIn={isLoggedIn} user={user}  dispatch={dispatch}/>} />
 
       
 
