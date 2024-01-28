@@ -54,6 +54,10 @@ function App() {
     },{
       path : "http://localhost:8501/" ,
       name : "Crop Prediction"
+    } ,
+    {
+      path : "http://localhost:8502/" ,
+      name : "Disease Detection"
     }
 
   ]
