@@ -50,7 +50,11 @@ function App() {
     {
       path: "/auction",
       name : "Auction",
+    },{
+      path : "http://localhost:8501/" ,
+      name : "Crop Prediction"
     }
+
   ]
 
 
