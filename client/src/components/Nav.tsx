@@ -89,7 +89,7 @@ export default function Nav({ toggleLogin, isLoggedIn , routes , user }: any) {
             to="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
-            <img src="/vite.svg" className="md:h-8 h-6" alt="vite" />
+            <img src="/logo.png" className="md:h-12 h-6" alt="vite" />
           </CustomNavLink>
           <div className="flex md:order-2 space-x-3 md:space-x-0  rtl:space-x-reverse">
             {!isLoggedIn && (

@@ -26,6 +26,10 @@ const auctionSchema = new mongoose.Schema({
   bidder:{
     type: String,
     default: ""
+  },
+  cropImage: {
+    publicId : String,
+    url : String,
   }
 });
 

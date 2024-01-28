@@ -4,22 +4,27 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken")
 const axios = require("axios")
 
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
 exports.register = async (req, res) => {
     try {
         const { name, email, password, contact, address } = req.body;
-
-        const file = req.files.avtar;
-        console.log(file);
+        const file = req.files.avtar
+        let url = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fdefault-profile-picture&psig=AOvVaw0VI5-gwluF2jryHsQr2C14&ust=1692935729740000&source=images&cd=vfe&opi=89978449&ved=0CA4QjRxqFwoTCLDXztyz9IADFQAAAAAdAAAAABAI", public_id = "sampleid"
+    
 
         await cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
-            if (err) {
-                console.log(err);
-            }
-            url = result.url;
-            public_id = result.public_id;
-        });
-
-        const { avatar } = req.files;
+            if (err) console.log(err)
+            url = result.url
+            public_id = result.public_id
+          })
+          console.log("url" + url)
 
         let user = await User.findOne({ email });
 
@@ -47,7 +52,7 @@ exports.register = async (req, res) => {
             await user.save()
             await sendEmail({
                 email,
-                subject: 'SWASTIK Registration VERIFICATION',
+                subject: 'OTP from Kisaan Sathi',
                 message:  `your OTP is ${otp}`,
             });
     
@@ -68,7 +73,7 @@ exports.register = async (req, res) => {
             await user.save()
             await sendEmail({
                 email:user.email,
-                subject: 'SWASTIK REGISTRATION VERIFICATION',
+                subject: 'OTP from Kisaan Sathi',
                 message:  `your OTP is ${otp}`,
             });
 

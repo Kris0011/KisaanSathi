@@ -1,12 +1,45 @@
 const Auction = require("../models/Auction")
 const {sendAuctionConfirmationEmail} = require('../middlewares/sendMail');
 
+const cloudinary = require('cloudinary').v2;
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
 
 exports.createAuction = async (req,res) => {
-    try{
-        const {cropName,userId} = req.body
+    console.log("Inside create auction");
 
-        const auction = await Auction.create({userId,cropName})
+    try{
+        const {cropName, userId , expireTime, bidPrice } = req.body;
+        console.log(cropName, userId , expireTime, bidPrice);
+
+        // console.log(req.file);
+        // console.log(req.body);
+
+        // const file = req.files.cropImage;
+        // console.log(req.files.cropImage);
+
+        
+        
+        // await cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        //     url = result.url;
+        //     public_id = result.public_id;
+
+        //     console.log("url : ", url);
+        //     console.log("public_id : ", public_id);
+        // });
+        const public_id = "public_id";
+        const url = "url";
+        
+        const auction = await Auction.create({userId, cropName, expireTime, bidPrice, cropImage:{public_id: public_id, url: url} });
 
         res.status(200).json({
             success:true,
@@ -19,6 +52,11 @@ exports.createAuction = async (req,res) => {
             error: err.message
         })
     }
+}
+
+exports.checkAuction = async (req,res) => {
+
+    console.log("Inside check auction");
 }
 
 exports.getAllAuction = async (req,res) => {

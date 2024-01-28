@@ -45,6 +45,7 @@ const AuctionRoom = () => {
   const onExpire = async () => {
     setEmailData(emailData);
     const data = emailData;
+
     try {
         setBids(bids);
       navigate("/");
@@ -57,6 +58,7 @@ const AuctionRoom = () => {
       });
 
       console.log("mail send to user");
+      navigate("/auction");
 
     } catch (e) {
       console.log(e);
