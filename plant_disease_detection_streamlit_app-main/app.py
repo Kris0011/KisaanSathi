@@ -39,6 +39,9 @@ async def potato():
         st.image(image, caption="Uploaded Image", width=250)
         image = read_file_as_image(image)
         image_batch = np.expand_dims(image, axis=0)
+
+        image_batch = tf.convert_to_tensor(image_batch[:, :, :, :3])
+
         predictions = MODEL.predict(image_batch)
         predicted_class = class_names[np.argmax(predictions[0])]
         confidence = np.max(predictions[0])
@@ -79,14 +82,17 @@ async def pepper():
         # image_batch = tf.reshape(image_batch, (-1, 256, 256, 3, 1))
         # image_batch = tf.squeeze(image_batch)
 
-        image_batch = image_batch[:, :, :3]
-        image_batch = tf.image.resize(image_batch, (256, 256))
+        image_batch = tf.convert_to_tensor(image_batch[:, :, :, :3])
+
+
+        # image_batch = tf.image.resize(image_batch, (256, 256))
 
         predictions = PEEPER_MODEL.predict(image_batch)
         predicted_class = pepper_classes[np.argmax(predictions[0])]
         confidence = np.max(predictions[0])
         print("prediction", pepper_classes[np.argmax(predictions)])
-        st.write("Predicted Class : ", predicted_class, "         Confidence Level : ", confidence)
+        st.write("Predicted Class : ", predicted_class)
+        st.write("Confidence Level : ", confidence)
 
 import asyncio
 
