@@ -1,7 +1,9 @@
 import axios from "axios";
 import { Navigate } from "react-router-dom";
-import { useToast } from "@chakra-ui/react";
 import AddButton from "../Upload/Add";
+import { useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+
 
 type Props = {
   toggleLogin: () => void;
@@ -16,32 +18,29 @@ export default function ProfilePage({
   user,
   dispatch,
 }: Props) {
-  // const { user }: any = useSelector((state) => state) || {};
-  // // console.log (user);
   // const dispatch = useDispatch();
-  const toast = useToast();
-
   const logout = async () => {
-    await axios.post("https://connect-qbpn.onrender.com/api/v1/logout", {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
-    // // console.log ("logout res " + response.success);
-    dispatch({
-      type: "CLEAR_USER",
-    });
 
-    toast({
-      title: "Logged out successfully",
-      status: "success",
-      position: "top",
-      duration: 3000,
-      isClosable: true,
-    });
+    
+    try{
+      await axios.get("http://localhost:3000/api/v1//logout", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      dispatch({
+        type: "CLEAR_USER",
+      });
 
-    toggleLogin();
+      toast.success("Logged out successfully");
+      toggleLogin();
+    }catch(err){
+      toast.error("Error");
+    }
+
+
+  
   };
 
   return (
@@ -73,7 +72,7 @@ export default function ProfilePage({
           <span className="md:text-md text-sm text-gray-500 dark:text-gray-400">
             {user?.email}
           </span>
-          <div className="flex">
+          {/* <div className="flex">
             <div className="m-5">
               <h5 className="mb-1 md:text-xl text-md font-medium text-gray-900 dark:text-white">
                 Blogs
@@ -90,7 +89,7 @@ export default function ProfilePage({
                 0
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 
