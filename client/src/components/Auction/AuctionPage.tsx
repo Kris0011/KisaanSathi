@@ -87,7 +87,7 @@ export default function Auction({ isLoggedIn, user }: any) {
                       Name :{" "}
                       <span className="font-semibold">{auction.cropName}</span>
                     </h2>
-                    <img src={auction.cropImage.url} className="h-48 rounded-md m-4" alt="" />
+                    <img src={auction.cropImage?.url} className="h-48 rounded-md m-4" alt="" />
                     <p className="description m-2">
                       <span className="font-semibold">Description : </span>
                       {auction.desc}
