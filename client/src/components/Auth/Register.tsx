@@ -33,15 +33,13 @@ export default function Register({
     onClose();
   };
 
-  const [data, setData] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    otp: "",
-    avtar: "",
-    contact : "",
-    address : "",
-
+    contact:"",
+    address:"",
+    avtar: null,
   });
 
 
@@ -50,24 +48,17 @@ export default function Register({
 
  
 
-  const registerUser = async () => {
-    // e.preventDefault();
-    
-    // const { name, email, password, contact , address } = data;
-    // console.log(name, email, password, contact , address);
-
-    // console.log(data);
-    
+  const registerUser = async (e) => {
     
     try{
-      const res = await axios.post("http://localhost:3000/api/v1/register", data ,
+      const res = await axios.post("http://localhost:3000/api/v1/register", formData ,
       {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "multipart/form-data",
         },
-        withCredentials: true
+        withCredentials: true,
       });
-      console.log(res.data);
+
       toast.success("OTP sent to your email");
      
     }
@@ -83,7 +74,7 @@ export default function Register({
       // e.preventDefault();
       
     try{
-      const res = await axios.post("http://localhost:3000/api/v1/verify", data ,
+      const res = await axios.post("http://localhost:3000/api/v1/verify", formData ,
       {
         headers: {
           "Content-Type": "application/json"
@@ -105,25 +96,28 @@ export default function Register({
 
     
 
-  const updateData = (e: any) => {
-    const { name, value, files } = e.target;
-    if (name == "avtar" && files && files[0]) {
-      const imageFile = files[0];
-      setData((prevData) => ({
-        ...prevData,
-        [name]: imageFile,
-      }));
-      const url = URL.createObjectURL(imageFile);
-      setPhotoURL(url);
-    } else {
-      setData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
-    }
-
-    // console.log(data);
-  };
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value, files } = event.target;
+  
+      if (name === "avtar" && files && files[0]) {
+        const imageFile = files[0];
+  
+        // Use the updater function to ensure the state update is based on the previous state
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: imageFile,
+        }));
+  
+        const imageUrl = URL.createObjectURL(imageFile);
+        setPhotoURL(imageUrl);
+        
+      } else {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value,
+        }));
+      }
+    };
 
   return (
     <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -141,7 +135,7 @@ export default function Register({
             <FormLabel color="white">Username:</FormLabel>
             <Input
               name="name"
-              onChange={updateData}
+              onChange={handleChange}
               placeholder="Enter your username"
               bg="gray.300"
             />
@@ -150,7 +144,7 @@ export default function Register({
             <FormLabel color="white">Email:</FormLabel>
             <Input
               name="email"
-              onChange={updateData}
+              onChange={handleChange}
               type="email"
               placeholder="Enter your email"
               bg="gray.300"
@@ -160,7 +154,7 @@ export default function Register({
             <FormLabel color="white">Password:</FormLabel>
             <Input
               name="password"
-              onChange={updateData}
+              onChange={handleChange}
               type="password"
               placeholder="Enter your password"
               bg="gray.300"
@@ -170,7 +164,7 @@ export default function Register({
             <FormLabel color="white">Contact:</FormLabel>
             <Input
               name="contact"
-              onChange={updateData}
+              onChange={handleChange}
               type="number"
               placeholder="Enter your contact"
               bg="gray.300"
@@ -180,7 +174,7 @@ export default function Register({
             <FormLabel color="white">Address:</FormLabel>
             <Input
               name="address"
-              onChange={updateData}
+              onChange={handleChange}
               type="text"
               placeholder="Enter your address"
               bg="gray.300"
@@ -190,7 +184,7 @@ export default function Register({
             <FormLabel color="white">Avatar:</FormLabel>
             <Input
               name="avtar"
-              onChange={updateData}
+              onChange={handleChange}
               type="file"
               accept=".jpg, .jpeg, .png"
               width={200}
@@ -206,7 +200,7 @@ export default function Register({
             <FormControl>
               <Input
                 name="otp"
-                onChange={updateData}
+                onChange={handleChange}
                 placeholder="Enter the OTP"
                 bg="gray.300"
               />
