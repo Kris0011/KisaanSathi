@@ -39,7 +39,7 @@ export default function Register({
     password: "",
     contact:"",
     address:"",
-    avtar: null,
+    avtar : File,
   });
 
 
@@ -48,10 +48,10 @@ export default function Register({
 
  
 
-  const registerUser = async (e) => {
+  const registerUser = async () => {
     
     try{
-      const res = await axios.post("http://localhost:3000/api/v1/register", formData ,
+       await axios.post("http://localhost:3000/api/v1/register", formData ,
       {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -74,14 +74,14 @@ export default function Register({
       // e.preventDefault();
       
     try{
-      const res = await axios.post("http://localhost:3000/api/v1/verify", formData ,
+      await axios.post("http://localhost:3000/api/v1/verify", formData ,
       {
         headers: {
           "Content-Type": "application/json"
         },
         withCredentials: true
       });
-      console.log(res.data);
+      // console.log(res.data);
      
       toast.success("Registered in successfully");
       onClose();
@@ -102,10 +102,9 @@ export default function Register({
       if (name === "avtar" && files && files[0]) {
         const imageFile = files[0];
   
-        // Use the updater function to ensure the state update is based on the previous state
         setFormData((prevFormData) => ({
           ...prevFormData,
-          [name]: imageFile,
+          avtar: imageFile,
         }));
   
         const imageUrl = URL.createObjectURL(imageFile);

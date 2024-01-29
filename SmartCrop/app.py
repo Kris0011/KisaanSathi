@@ -7,7 +7,7 @@ import warnings
 
 warnings.filterwarnings("ignore", message="Trying to unpickle estimator")
 
-st.set_page_config(page_title="SmartCrop", page_icon="https://cdn.jsdelivr.net/gh/twitter/twemoji@master/assets/72x72/1f33f.png", layout='centered', initial_sidebar_state="collapsed")
+st.set_page_config(page_title="KisaanSathi", page_icon="https://cdn.jsdelivr.net/gh/twitter/twemoji@master/assets/72x72/1f33f.png", layout='centered', initial_sidebar_state="collapsed")
 
 def load_model(modelfile):
     loaded_model = pickle.load(open(modelfile, 'rb'))
@@ -17,7 +17,7 @@ def main():
     # title
     html_temp = """
     <div>
-    <h1 style="color:MEDIUMSEAGREEN;text-align:center;"> SmartCrop: Intelligent Crop Recommendation 🌱 </h1>
+    <h1 style="color:MEDIUMSEAGREEN;text-align:center;"> KisaanSathi: Intelligent Crop Recommendation 🌱 </h1>
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html=True)
