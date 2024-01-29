@@ -39,7 +39,7 @@ export default function Register({
     password: "",
     contact:"",
     address:"",
-    avtar : File,
+    avtar: {} as File,
   });
 
 

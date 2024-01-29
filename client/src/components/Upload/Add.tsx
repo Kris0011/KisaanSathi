@@ -54,6 +54,9 @@ const AddButton = ({ user }: any) => {
   };
 
   const createAuction = async (e: any) => {
+
+    e.preventDefault();
+    
    
     const cropName = auctionData.cropName;
     const userId = user._id;
